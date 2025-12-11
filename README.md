@@ -13,7 +13,7 @@ This project demonstrates a complete acoustic ML pipeline:
 
 ### 1. Clone the repository
 ```bash
-git clone <https://github.com/DiogoRolo19/acoustic-ml>
+git clone <https://github.com/DiogoRolo19/acoustic-ml/tree/master>
 cd <acoustic-ml>
 ```
 
