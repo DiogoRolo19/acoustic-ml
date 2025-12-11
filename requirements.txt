@@ -1,0 +1,13 @@
+librosa==0.10.1
+numpy
+pandas
+scipy
+soundfile
+torch
+torchlibrosa
+pathlib
+urllib
+bs4
+fastapi
+uvicorn
+matplotlib
