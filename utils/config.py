@@ -1,0 +1,12 @@
+SR = 44100
+
+PREPROCESSED_ROOT = "preprocessed"
+FEATURES_ROOT = "features"
+
+SPECIES_COLUMN = "simple_species"
+
+SAVE_INTERVAL = 10
+EPOCHS = 200
+
+MEL_BINS = 64
+N_MFCC = 13

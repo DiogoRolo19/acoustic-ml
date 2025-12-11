@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Test Audio Evaluation</h2>
+
+<select id="sampleList"></select>
+
+<br><br>
+<audio id="audioPlayer" controls></audio>
+<br><br>
+
+<h3>Feature Visualization</h3>
+<select id="featureList"></select>
+<br><br>
+<img id="featurePlot" width="600" alt="Feature plot will appear here">
+<br><br>
+
+<button onclick="evaluateSample()">Evaluate</button>
+
+<p><b>True Label:</b> <span id="trueLabel">---</span></p>
+<p><b>Predicted Label:</b> <span id="predictedLabel">---</span></p>
+
+<script>
+async function loadSamples() {
+    const res = await fetch("http://localhost:8000/samples");
+    const samples = await res.json();
+
+    const select = document.getElementById("sampleList");
+    samples.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.index;
+        opt.textContent = s.npy_name;
+        select.appendChild(opt);
+    });
+
+    updateAudio();
+    await updateFeatures();
+}
+
+async function updateAudio() {
+    const index = document.getElementById("sampleList").value;
+    document.getElementById("audioPlayer").src =
+        `http://localhost:8000/audio/${index}`;
+    
+    // Clear the labels
+    document.getElementById("trueLabel").textContent = '---';
+    document.getElementById("predictedLabel").textContent = '---';
+}
+
+
+async function evaluateSample() {
+    const index = document.getElementById("sampleList").value;
+
+    const res = await fetch(
+        `http://localhost:8000/evaluate?index=${index}`
+    );
+
+    const out = await res.json();
+
+    document.getElementById("trueLabel").textContent = out.true_label;
+    document.getElementById("predictedLabel").textContent = out.predicted_label;
+}
+
+document.getElementById("sampleList").addEventListener("change", updateAudio);
+
+async function updateFeatures() {
+    const index = document.getElementById("sampleList").value;
+    const res = await fetch(`http://localhost:8000/features/${index}`);
+    const data = await res.json();
+
+    const select = document.getElementById("featureList");  // match HTML id
+    select.innerHTML = "";
+    data.features.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        select.appendChild(opt);
+    });
+
+    updateFeaturePlot();
+}
+
+async function updateFeaturePlot() {
+    const index = document.getElementById("sampleList").value;
+    const feature_name = document.getElementById("featureList").value;
+
+    document.getElementById("featurePlot").src =
+        `http://localhost:8000/features_plot/${index}?feature_name=${feature_name}`;
+}
+
+// Update plot when sample or feature changes
+document.getElementById("sampleList").addEventListener("change", () => {
+    updateAudio();
+    updateFeatures();
+});
+document.getElementById("featureList").addEventListener("change", updateFeaturePlot);
+
+// Load samples on startup
+loadSamples();
+
+</script>
+</body>
+</html>
