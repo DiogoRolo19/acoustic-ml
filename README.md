@@ -22,11 +22,9 @@ cd <acoustic-ml>
 python3.13 -m pip install -r requirements.txt
 ```
 
-### 3. Run preprocessing & main pipeline
-- **Optional:** If you want to start fresh, delete the preprocessed data directory first:
-```bash
-rm -rf preprocessed
-```
+### 3. Download model and weights
+- https://drive.google.com/drive/folders/1D3vsUDSofWpdNcOs-NTfzK9jgQBf_tkT?usp=drive_link
+
 
 - Run the main pipeline:
 ```bash
